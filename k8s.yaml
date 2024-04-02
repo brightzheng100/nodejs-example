@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-example
+  labels:
+    app: nodejs-example
+spec:
+  selector:
+    app: nodejs-example
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-example
+  template:
+    metadata:
+      labels:
+        app: nodejs-example
+    spec:
+      containers:
+      - name: nodejs-example
+        image: ${REPO_NAMESPACE}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
