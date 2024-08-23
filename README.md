@@ -2,9 +2,26 @@
 
 ## Run locally
 
+Firstly, install the packages, which is one-off thing:
+
 ```sh
-npm run start
+npm install
 ```
+
+Then, start it up:
+
+```sh
+npm start
+```
+
+Then we can access it through: http:<IP>:3000.
+
+Or, if you want to use a custom port, do this:
+
+```sh
+PORT=8080 npm start
+```
+
 
 ## Build Docker Image
 
