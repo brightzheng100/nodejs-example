@@ -8,6 +8,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@instana/collector": "^3.15.1",
     "express": "4.19.2"
   }
 }

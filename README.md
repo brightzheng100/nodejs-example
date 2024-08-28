@@ -55,3 +55,19 @@ To generate some load, run this:
 CLUSTER_IP="`kubectl get service/nodejs-example -n demo -o jsonpath='{.spec.clusterIP}'`"
 while true; do curl http://${CLUSTER_IP}:3000/ping; curl http://${CLUSTER_IP}:3000/random; sleep 1; done 
 ```
+
+## When monitored by IBM Instana
+
+IBM Instana offers great support for Node.js apps without any code changes.
+
+The typical steps might look like:
+1. Install the Instana agent's Node.js collector into your app, which will be automatically handled with webhook when you're with Kubernetes/OpenShift: `npm install --save @instana/collector`.
+2. Export the `NODE_OPTIONS`, like: `NODE_OPTIONS="--require ./node_modules/@instana/collector/src/immediate"`.
+3. Optionally, define a friendly service name, which will be discovered and displayed on UI, say `INSTANA_SERVICE_NAME=my-simple-nodejs-app`.
+4. Optionally, enable `INSTANA_DEBUG=true` to output verbose instrumentation / tracing info, which helps when you're trying to learn more.
+
+So the run command may look like this: 
+
+```sh
+$ nohup bash -c "NODE_OPTIONS='--require ./node_modules/@instana/collector/src/immediate' INSTANA_SERVICE_NAME=my-cool-nodejs-app INSTANA_DEBUG=true PORT=8080 npm start" &> app.out & echo $! > app.pid
+```
