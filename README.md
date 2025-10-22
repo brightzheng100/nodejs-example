@@ -60,7 +60,10 @@ while true; do curl http://${CLUSTER_IP}:3000/ping; curl http://${CLUSTER_IP}:30
 
 IBM Instana offers great support for Node.js apps without any code changes.
 
+### In no-OCP/K8s env
+
 The typical steps might look like:
+
 1. Install the Instana agent's Node.js collector into your app, which will be automatically handled with webhook when you're with Kubernetes/OpenShift: `npm install --save @instana/collector`.
 2. Export the `NODE_OPTIONS`, like: `NODE_OPTIONS="--require ./node_modules/@instana/collector/src/immediate"`.
 3. Optionally, define a friendly service name, which will be discovered and displayed on UI, say `INSTANA_SERVICE_NAME=my-simple-nodejs-app`.
@@ -71,3 +74,13 @@ So the run command may look like this:
 ```sh
 $ nohup bash -c "NODE_OPTIONS='--require ./node_modules/@instana/collector/src/immediate' INSTANA_SERVICE_NAME=my-cool-nodejs-app INSTANA_DEBUG=true PORT=8080 npm start" &> app.out & echo $! > app.pid
 ```
+
+### In OCP/K8s env
+
+When Node.js apps are deployed in OCP/K8s, there is a Autotrace Webhook for the necessary automatic mutation, where Node.js support is enabled by default.
+
+GitHub Repo: https://github.com/instana/instana-autotrace-webhook
+
+You may consider Instana's `opt-in` or `opt-out` strategy as well to bring in granular auto-instrumentation control:
+- `opt-out` is the default strategy, which simply means that: I'll try to auto-instrument all apps unless you tell me not to do so.
+- `opt-in` is the the opposite and more conservative strategy, which simply means that: I won't instrument any apps unless you tell me to do so.
